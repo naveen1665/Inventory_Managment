@@ -1,19 +1,27 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { Package } from 'lucide-react';
+import { Package, Loader2 } from 'lucide-react';
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const { login } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const success = await login(username, password);
-        if (success) {
-            navigate('/');
+        setIsLoading(true);
+        try {
+            const success = await login(username, password);
+            if (success) {
+                navigate('/');
+            } else {
+                setIsLoading(false);
+            }
+        } catch (error) {
+            setIsLoading(false);
         }
     };
 
@@ -52,8 +60,9 @@ const Login = () => {
                             />
                         </div>
 
-                        <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '1rem', padding: '1rem', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                            Login
+                        <button type="submit" className="btn btn-primary" disabled={isLoading} style={{ width: '100%', marginTop: '1rem', padding: '1rem', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '1px', display: 'flex', justifyContent: 'center', gap: '0.5rem', opacity: isLoading ? 0.7 : 1 }}>
+                            {isLoading ? <Loader2 size={20} style={{ animation: 'spin 1s linear infinite' }} /> : null}
+                            {isLoading ? 'Authenticating...' : 'Login'}
                         </button>
                     </form>
                 </div>
