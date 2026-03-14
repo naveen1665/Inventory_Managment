@@ -3,7 +3,7 @@ import axios from 'axios';
 // Vite proxies /api to port 5001 as defined in vite.config.js for dev
 // In production, we need an absolute URL
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api',
+    baseURL: import.meta.env.VITE_API_BASE_URL || 'https://inventory-managment-oi0v.onrender.com/api',
 });
 
 // Interceptor to attach the bearer token to requests
